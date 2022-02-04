@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/program.dir/main.cpp.o CMakeFiles/program.dir/myTcp.cpp.o CMakeFiles/program.dir/rdma.cpp.o CMakeFiles/program.dir/rdmaTcp.cpp.o  -o program  -lpthread 
