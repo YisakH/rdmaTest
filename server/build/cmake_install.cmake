@@ -1,4 +1,4 @@
-# Install script for directory: /home/yshong/lab/myRDMA
+# Install script for directory: /home/yshong/lab/rdmaTest/server
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/yshong/lab/myRDMA/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/yshong/lab/rdmaTest/server/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

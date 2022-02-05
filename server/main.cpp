@@ -26,9 +26,6 @@ int main(int argc, char *argv[])
 
     //-------------------------------------------------------------------------
 
-    
-    rdmaTcp myrdmaTcp(argv[1]);
-
 
     RDMA rdma;
   

@@ -4,10 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/yshong/lab/myRDMA/main.cpp" "/home/yshong/lab/myRDMA/build/CMakeFiles/program.dir/main.cpp.o"
-  "/home/yshong/lab/myRDMA/myTcp.cpp" "/home/yshong/lab/myRDMA/build/CMakeFiles/program.dir/myTcp.cpp.o"
-  "/home/yshong/lab/myRDMA/rdma.cpp" "/home/yshong/lab/myRDMA/build/CMakeFiles/program.dir/rdma.cpp.o"
-  "/home/yshong/lab/myRDMA/rdmaTcp.cpp" "/home/yshong/lab/myRDMA/build/CMakeFiles/program.dir/rdmaTcp.cpp.o"
+  "/home/yshong/lab/rdmaTest/server/main.cpp" "/home/yshong/lab/rdmaTest/server/build/CMakeFiles/program.dir/main.cpp.o"
+  "/home/yshong/lab/rdmaTest/server/myTcp.cpp" "/home/yshong/lab/rdmaTest/server/build/CMakeFiles/program.dir/myTcp.cpp.o"
+  "/home/yshong/lab/rdmaTest/server/rdma.cpp" "/home/yshong/lab/rdmaTest/server/build/CMakeFiles/program.dir/rdma.cpp.o"
+  "/home/yshong/lab/rdmaTest/server/rdmaTcp.cpp" "/home/yshong/lab/rdmaTest/server/build/CMakeFiles/program.dir/rdmaTcp.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

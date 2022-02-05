@@ -6,5 +6,5 @@ CXX_FLAGS = -g
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/yshong/lab/myRDMA/includes 
+CXX_INCLUDES = -I/home/yshong/lab/rdmaTest/server/includes 
 
