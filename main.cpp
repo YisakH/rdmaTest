@@ -10,26 +10,19 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    manyToMany mymanyToMany(argv[1]);
+    rdmaTcp myrdmaTcp(argv[1]);
+
     printf("%s\n", argv[1]);
 
-    mymanyToMany.server();
+    myrdmaTcp.server();
     sleep(1);
-    mymanyToMany.client(NoOfNode);
+    myrdmaTcp.client(NoOfNode);
 
 
     string input = "";
 
 
     sleep(2);
-
-
-
-
-    while(true){
-        getline(cin, input);
-        mymanyToMany.send_msg((char *)input.c_str());
-    }
 
     //-------------------------------------------------------------------------
 

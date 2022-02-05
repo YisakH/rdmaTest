@@ -15,5 +15,5 @@ add_executable(program main.cpp myTcp.cpp rdma.cpp rdmaTcp.cpp)
 
 #add_subdirectory(lib)
 #target_link_libraries(program PRIVATE Threads::Threads)
-target_link_libraries(program PRIVATE pthread)
+target_link_libraries(program PRIVATE pthread ibverbs)
 target_include_directories(program PUBLIC includes)
