@@ -1,3 +1,0 @@
-/home/yshong/lab/myRDMA/build/CMakeFiles/rebuild_cache.dir
-/home/yshong/lab/myRDMA/build/CMakeFiles/edit_cache.dir
-/home/yshong/lab/myRDMA/build/CMakeFiles/program.dir
