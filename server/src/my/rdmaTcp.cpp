@@ -2,7 +2,7 @@
 
 rdmaTcp::rdmaTcp(string ip):manyToMany(ip){}
 
-map<string, string> rdmaTcp::readRDMAInfo()
+map<string, string> rdmaTcp::readRDMAInfo(int sock)
 {
     map<string, string> info;
     string info_name[6] = {"addr", "len", "lkey", "rkey", "lid", "qp_num"};
@@ -22,7 +22,7 @@ map<string, string> rdmaTcp::readRDMAInfo()
         string result="";
 
         while(result.back() != '\n'){
-            read(sockList.back(), str, 1);
+            read(sock, str, 1);
             result += str[0];
         }
         info.insert({info_name[i], result});

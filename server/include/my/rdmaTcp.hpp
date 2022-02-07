@@ -5,7 +5,7 @@ class rdmaTcp : public manyToMany
 public:
     rdmaTcp(string ip);
 
-    map<string, string> readRDMAInfo();
+    map<string, string> readRDMAInfo(int sock);
 
     vector<int> getValidSock();
 

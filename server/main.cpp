@@ -50,7 +50,12 @@ int main(int argc, char *argv[])
     myrdmaTcp.send_msg(to_string(qp_num)+"\n");
 
     //Read RDMA info
-    map<string, string> rdmaInfo = myrdmaTcp.readRDMAInfo();
+    vector<int> sockList = myrdmaTcp.getValidSock();
+    
+    vector<map<string,string>> rdmaInfo;
+
+    
+    //map<string, string> rdmaInfo = myrdmaTcp.readRDMAInfo();
 
     //Exchange queue pair state
     rdma.changeQueuePairStateToInit(qp);
@@ -58,8 +63,9 @@ int main(int argc, char *argv[])
     rdma.changeQueuePairStateToRTS(qp);
 
     sleep(10);
-    for(int i = 0; i < 1024; i++)cout << send_buffer[i] << endl;
     
+    cout << send_buffer << endl;
+
     ibv_destroy_qp(qp);
     ibv_destroy_cq(completion_queue);
     ibv_dereg_mr(mr);
