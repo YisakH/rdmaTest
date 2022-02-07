@@ -27,12 +27,9 @@ int main(int argc, char *argv[])
     //-------------------------------------------------------------------------
 
 
-
     RDMA rdma;
   
     struct ibv_context* context = rdma.createContext();
-
-    printf("one\n");
     struct ibv_pd* protection_domain = ibv_alloc_pd(context);
     int cq_size = 0x10;
     struct ibv_cq* completion_queue = ibv_create_cq(context, cq_size, nullptr, nullptr, 0);
@@ -52,23 +49,34 @@ int main(int argc, char *argv[])
     myrdmaTcp.send_msg(to_string(lid)+"\n");
     myrdmaTcp.send_msg(to_string(qp_num)+"\n");
 
-    printf("정상 송신 완료\n");
-
     //Read RDMA info
-    map<string, string> rdmaInfo = myrdmaTcp.readRDMAInfo();
+    vector<int> sockList = myrdmaTcp.getValidSock();
+    
+    vector<map<string,string>> rdmaInfo;
 
-    printf("메시지 수신 완료");
+    for(int i=0; i<sockList.size(); i++){
+        map<string,string> returnVal = myrdmaTcp.readRDMAInfo(sockList[i]);
+        rdmaInfo.push_back(returnVal);
+    }
+    //map<string, string> rdmaInfo = myrdmaTcp.readRDMAInfo();
 
     //Exchange queue pair state
-    rdma.changeQueuePairStateToInit(qp);
-    rdma.changeQueuePairStateToRTR(qp, PORT, stoi(rdmaInfo.find("qp_num")->second), stoi(rdmaInfo.find("lid")->second));
-    rdma.changeQueuePairStateToRTS(qp);
+    for(int i=0; i<sockList.size(); i++){
+        rdma.changeQueuePairStateToInit(qp);
+        rdma.changeQueuePairStateToRTR(qp, PORT, stoi(rdmaInfo[i].find("qp_num")->second), stoi(rdmaInfo[i].find("lid")->second));
+        rdma.changeQueuePairStateToRTS(qp);
+    }
+
+    sleep(10);
+    cout << send_buffer << endl;
 
     string sss = "fuck u";
     strcpy(send_buffer, sss.c_str());
 
-    rdma.post_rdma_write(qp, mr, send_buffer, sizeof(char)*1024, rdmaInfo.find("addr")->second, rdmaInfo.find("rkey")->second);
-    rdma.pollCompletion(completion_queue);
+    for(int i=0; i<sockList.size(); i++){
+        rdma.post_rdma_write(qp, mr, send_buffer, sizeof(char)*1024, rdmaInfo[i].find("addr")->second, rdmaInfo[i].find("rkey")->second);
+        rdma.pollCompletion(completion_queue);
+    }
     
     ibv_destroy_qp(qp);
     ibv_destroy_cq(completion_queue);

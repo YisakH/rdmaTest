@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
     int cq_size = 0x10;
     struct ibv_cq* completion_queue = ibv_create_cq(context, cq_size, nullptr, nullptr, 0);
     struct ibv_qp* qp = rdma.createQueuePair(protection_domain, completion_queue);
+
     char send_buffer[1024];
     struct ibv_mr *mr = rdma.registerMemoryRegion(protection_domain, send_buffer, sizeof(send_buffer));
     uint16_t lid = rdma.getLocalId(context, PORT);
@@ -54,22 +55,27 @@ int main(int argc, char *argv[])
     
     vector<map<string,string>> rdmaInfo;
 
-    
+    for(int i=0; i<sockList.size(); i++){
+        map<string,string> returnVal = myrdmaTcp.readRDMAInfo(sockList[i]);
+        rdmaInfo.push_back(returnVal);
+    }
     //map<string, string> rdmaInfo = myrdmaTcp.readRDMAInfo();
 
     //Exchange queue pair state
-    rdma.changeQueuePairStateToInit(qp);
-    rdma.changeQueuePairStateToRTR(qp, PORT, stoi(rdmaInfo.find("qp_num")->second), stoi(rdmaInfo.find("lid")->second));
-    rdma.changeQueuePairStateToRTS(qp);
+    for(int i=0; i<sockList.size(); i++){
+        rdma.changeQueuePairStateToInit(qp);
+        rdma.changeQueuePairStateToRTR(qp, PORT, stoi(rdmaInfo[i].find("qp_num")->second), stoi(rdmaInfo[i].find("lid")->second));
+        rdma.changeQueuePairStateToRTS(qp);
+    }
 
     sleep(10);
-    
     cout << send_buffer << endl;
-
+    
     ibv_destroy_qp(qp);
     ibv_destroy_cq(completion_queue);
     ibv_dereg_mr(mr);
     ibv_dealloc_pd(protection_domain);
+    
 
     return 0;
 }
