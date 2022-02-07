@@ -13,7 +13,7 @@
 
 using namespace std;
 
-#define NoOfNode 2
+#define NoOfNode 4
 
 class manyToMany
 {
