@@ -31,6 +31,8 @@ int main(int argc, char *argv[])
     RDMA rdma;
   
     struct ibv_context* context = rdma.createContext();
+
+    printf("one\n");
     struct ibv_pd* protection_domain = ibv_alloc_pd(context);
     int cq_size = 0x10;
     struct ibv_cq* completion_queue = ibv_create_cq(context, cq_size, nullptr, nullptr, 0);
@@ -50,8 +52,12 @@ int main(int argc, char *argv[])
     myrdmaTcp.send_msg(to_string(lid)+"\n");
     myrdmaTcp.send_msg(to_string(qp_num)+"\n");
 
+    printf("정상 송신 완료\n");
+
     //Read RDMA info
     map<string, string> rdmaInfo = myrdmaTcp.readRDMAInfo();
+
+    printf("메시지 수신 완료");
 
     //Exchange queue pair state
     rdma.changeQueuePairStateToInit(qp);

@@ -47,9 +47,17 @@ struct ibv_context* RDMA::createContext() {
         struct ibv_device *device = dev_list[0];
         printf("IB device: %s\n", ibv_get_device_name(device));
         context = ibv_open_device(device);
-        assert(context);
+
+
+        if(context)
+          printf("true");
+        else 
+          printf("false");
+        printf("open\n");
+        //assert(context);
         
     }
+    printf("리턴 실행도미");
   return context;
 }
 
