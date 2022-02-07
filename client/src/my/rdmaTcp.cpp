@@ -17,22 +17,17 @@ map<string, string> rdmaTcp::readRDMAInfo()
     }
 
     for(int i = 0; i < 6; i++){
-
+        char str[10];
+        printf("받기 시작\n");
         string result="";
 
         while(result.back() != '\n'){
-            printf("받기 시작\n");
-            char str[100];
-
-            read(sockList.back(), str, sizeof(str));
-            result = str;
-
-            printf("받은 문자열은 : %s\n\n", str);
-
-
+            read(sockList.back(), str, 1);
+            result += str[0];
         }
-
         info.insert({info_name[i], result});
+
+        printf("받은 문자열은 %s\n", result.c_str());
     }
 
     return info;
