@@ -27,7 +27,9 @@ map<string, string> rdmaTcp::readRDMAInfo()
             read(sockList.back(), str, sizeof(str));
             result = str;
 
-            printf("%s\n", str);
+            printf("받은 문자열은 : %s\n\n", str);
+
+
         }
 
         info.insert({info_name[i], result});
