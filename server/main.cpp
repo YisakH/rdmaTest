@@ -10,19 +10,13 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    rdmaTcp myrdmaTcp(argv[1]);
-
     printf("%s\n", argv[1]);
+    rdmaTcp myrdmaTcp(argv[1]);
 
     myrdmaTcp.server();
     sleep(1);
     myrdmaTcp.client(NoOfNode);
-
-
-    string input = "";
-
-
-    sleep(2);
+    sleep(1);
 
     //-------------------------------------------------------------------------
 

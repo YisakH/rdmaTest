@@ -1,7 +1,7 @@
 #include "include/my/rdmaTcp.hpp"
 #include "include/my/rdma.hpp"
 
-#define NUM_HOST 2
+#define NUM_HOST 4
 
 int main(int argc, char *argv[])
 {
