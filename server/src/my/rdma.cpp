@@ -57,7 +57,6 @@ struct ibv_context* RDMA::createContext() {
         //assert(context);
         
     }
-    printf("리턴 실행도미");
   return context;
 }
 
