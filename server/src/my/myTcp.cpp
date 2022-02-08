@@ -189,7 +189,7 @@ bool manyToMany::crea_conn_sock(int sock, in_addr_t ip, bool isServer)
 
     const char *converted_ip = inet_ntop(AF_INET, &ip, str, sizeof(str));
 
-    printf("[%s] : %s에 연결 성공!!\n",isServer ? "Server" : "Client" ,inet_ntop(AF_INET, &ip, str, sizeof(str)));
+    printf("[%s] : %s에 %d socket으로 연결 성공!!\n",isServer ? "Server" : "Client" ,inet_ntop(AF_INET, &ip, str, sizeof(str)), sock);
     //printf("%s\n", str);
 
     //thread t(&manyToMany::recv_msg, this, sock, ref(converted_ip));

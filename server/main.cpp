@@ -1,5 +1,6 @@
 #include "include/my/rdmaTcp.hpp"
 #include "include/my/myrdma.hpp"
+#include "ThreadPool.hpp"
 
 #define NUM_DEST 3
 
@@ -43,6 +44,7 @@ int main(int argc, char *argv[])
         myrdmaTcp.send_msg(i, to_string(myrdma[i].rdmaBaseData.qp_num)+"\n");
     }
     
+    sleep(2);
 
     //Send RDMA info
 
@@ -64,6 +66,7 @@ int main(int argc, char *argv[])
 
     if(serverMode){
         sleep(10);
+        
         for(int i=0; i<sockList.size(); i++){
             cout << send_buffer[i] << endl;
         }
