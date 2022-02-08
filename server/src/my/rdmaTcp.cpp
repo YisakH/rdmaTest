@@ -17,8 +17,8 @@ map<string, string> rdmaTcp::readRDMAInfo(int sock)
     }
 
     for(int i = 0; i < 6; i++){
+
         char str[10];
-        printf("받기 시작\n");
         string result="";
 
         while(result.back() != '\n'){
@@ -27,8 +27,9 @@ map<string, string> rdmaTcp::readRDMAInfo(int sock)
         }
         info.insert({info_name[i], result});
 
-        printf("받은 문자열은 %s\n", result.c_str());
+        printf("%s : %s", info_name[i].c_str(), result.c_str());
     }
+    printf("\n");
 
     return info;
 }
