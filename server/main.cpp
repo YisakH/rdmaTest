@@ -1,7 +1,7 @@
 #include "include/my/rdmaTcp.hpp"
 #include "include/my/myrdma.hpp"
 
-#define NUM_DEST 1
+#define NUM_DEST 3
 
 int main(int argc, char *argv[])
 {
