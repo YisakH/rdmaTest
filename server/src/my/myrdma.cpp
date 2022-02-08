@@ -12,7 +12,7 @@ void myRDMA::makeRDMAqp(char * send_buffer, int buffer_size)
     rdmaBaseData.completion_queue = ibv_create_cq(rdmaBaseData.context, rdmaBaseData.cq_size, nullptr, nullptr, 0);
     rdmaBaseData.qp = rdma->createQueuePair(rdmaBaseData.protection_domain, rdmaBaseData.completion_queue);
 
-    struct ibv_mr *mr = rdma->registerMemoryRegion(rdmaBaseData.protection_domain, send_buffer, buffer_size);
-    uint16_t lid = rdma->getLocalId(rdmaBaseData.context, PORT);
-    uint32_t qp_num = rdma->getQueuePairNumber(rdmaBaseData.qp);
+    rdmaBaseData.mr = rdma->registerMemoryRegion(rdmaBaseData.protection_domain, send_buffer, buffer_size);
+    rdmaBaseData.lid = rdma->getLocalId(rdmaBaseData.context, PORT);
+    rdmaBaseData.qp_num = rdma->getQueuePairNumber(rdmaBaseData.qp);
 }

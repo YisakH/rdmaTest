@@ -5,16 +5,17 @@
 
 int main(int argc, char *argv[])
 {
+    /*
     if(argc <= 1){
         printf("argument must be required\n");
         exit(1);
     }
 
     printf("%s\n", argv[1]);
-    printf("%s mode run\n", argv[2]);
+    printf("%s mode run\n", argv[2]);*/
 
-    rdmaTcp myrdmaTcp(argv[1]);
-    bool serverMode = (strcmp(argv[2], "-s") == 0 ? true : false);
+    rdmaTcp myrdmaTcp("192.168.0.100");
+    bool serverMode = (strcmp("-s", "-s") == 0 ? true : false);
 
     myrdmaTcp.server();
     sleep(1);
