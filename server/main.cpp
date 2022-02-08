@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
         }
     }
     else{ // client mode
-        string sss = "fuck u";
+        string sss = string(argv[1]) + " : Hi";
         for(int i=0; i<sockList.size(); i++){
             strcpy(send_buffer[i], sss.c_str());
             myrdma[i].post_rdma_write(myrdma[i].rdmaBaseData.qp, myrdma[i].rdmaBaseData.mr,
