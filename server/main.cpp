@@ -11,7 +11,10 @@ int main(int argc, char *argv[])
     }
 
     printf("%s\n", argv[1]);
+    printf("%s mode run\n", argv[2]);
+
     rdmaTcp myrdmaTcp(argv[1]);
+    bool serverMode = (strcmp(argv[2], "-s") == 0 ? true : false);
 
     myrdmaTcp.server();
     sleep(1);
@@ -58,10 +61,21 @@ int main(int argc, char *argv[])
         myrdma[i].changeQueuePairStateToRTS(myrdma[i].rdmaBaseData.qp);
     }
 
-    sleep(10);
 
-    for(int i=0; i<sockList.size(); i++){
-        cout << send_buffer[i] << endl;
+    if(serverMode){
+        sleep(10);
+        for(int i=0; i<sockList.size(); i++){
+            cout << send_buffer[i] << endl;
+        }
+    }
+    else{ // client mode
+        string sss = "fuck u";
+        for(int i=0; i<sockList.size(); i++){
+            strcpy(send_buffer[i], sss.c_str());
+            myrdma[i].post_rdma_write(myrdma[i].rdmaBaseData.qp, myrdma[i].rdmaBaseData.mr,
+                send_buffer[i], sizeof(char)*1024, rdmaInfo[i].find("addr")->second, rdmaInfo[i].find("rkey")->second);
+            myrdma[i].pollCompletion(myrdma[i].rdmaBaseData.completion_queue);
+        }
     }
 
     
