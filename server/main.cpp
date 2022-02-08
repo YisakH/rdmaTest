@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     vector<map<string,string>> rdmaInfo;
     char send_buffer[4][1024];
 
-    for(int i=0; i<NUM_DEST; i++){
+    for(int i=0; i<sockList.size(); i++){
         //char send_buffer[1024];
         myrdma[i].makeRDMAqp(send_buffer[i], sizeof(send_buffer));
 
