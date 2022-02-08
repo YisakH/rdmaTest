@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    sleep(3);
     
     for(int i=0; i<sockList.size(); i++){
         ibv_destroy_qp(myrdma[i].rdmaBaseData.qp);
