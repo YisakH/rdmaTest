@@ -33,6 +33,22 @@ map<string, string> rdmaTcp::readRDMAInfo(int sock)
     return info;
 }
 
+void rdmaTcp::send_msg(int index, string msg_s)
+{
+    char msg[100];
+    strcpy(msg, msg_s.c_str());
+
+    if(index >= getValidSock().size()){
+        printf("sock size error\n");
+        error_handring("no valid sock input");
+    }
+    
+    write(connect_clnt_sock[index], msg, strlen(msg));
+        
+    if(strcmp(msg, "exit") == 0)
+        exit_call();
+}
+
 vector<int> rdmaTcp::getValidSock()
 {
     return this->connect_clnt_sock;

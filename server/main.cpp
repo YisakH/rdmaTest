@@ -1,7 +1,7 @@
 #include "include/my/rdmaTcp.hpp"
-#include "include/my/rdma.hpp"
+#include "include/my/myrdma.hpp"
 
-#define NUM_HOST 2
+#define NUM_DEST 1
 
 int main(int argc, char *argv[])
 {
@@ -21,33 +21,29 @@ int main(int argc, char *argv[])
     //-------------------------------------------------------------------------
 
 
-    RDMA rdma;
-  
-    struct ibv_context* context = rdma.createContext();
-    struct ibv_pd* protection_domain = ibv_alloc_pd(context);
-    int cq_size = 0x10;
-    struct ibv_cq* completion_queue = ibv_create_cq(context, cq_size, nullptr, nullptr, 0);
-    struct ibv_qp* qp = rdma.createQueuePair(protection_domain, completion_queue);
+    myRDMA myrdma[NUM_DEST];
+    vector<int> sockList = myrdmaTcp.getValidSock();
+    vector<map<string,string>> rdmaInfo;
+    char send_buffer[4][1024];
 
-    char send_buffer[1024];
-    struct ibv_mr *mr = rdma.registerMemoryRegion(protection_domain, send_buffer, sizeof(send_buffer));
-    uint16_t lid = rdma.getLocalId(context, PORT);
-    uint32_t qp_num = rdma.getQueuePairNumber(qp);
+    for(int i=0; i<NUM_DEST; i++){
+        //char send_buffer[1024];
+        myrdma[i].makeRDMAqp(send_buffer[i], sizeof(send_buffer));
+
+        std::ostringstream oss;
+        oss << &send_buffer[i];
+        myrdmaTcp.send_msg(i, oss.str()+"\n");
+        myrdmaTcp.send_msg(i, to_string(myrdma[i].rdmaBaseData.mr->length)+"\n");
+        myrdmaTcp.send_msg(i, to_string(myrdma[i].rdmaBaseData.mr->lkey)+"\n");
+        myrdmaTcp.send_msg(i, to_string(myrdma[i].rdmaBaseData.mr->rkey)+"\n");
+        myrdmaTcp.send_msg(i, to_string(myrdma[i].rdmaBaseData.lid)+"\n");
+        myrdmaTcp.send_msg(i, to_string(myrdma[i].rdmaBaseData.qp_num)+"\n");
+    }
+    
 
     //Send RDMA info
-    std::ostringstream oss;
-    oss << &send_buffer;
-    myrdmaTcp.send_msg(oss.str()+"\n");
-    myrdmaTcp.send_msg(to_string(mr->length)+"\n");
-    myrdmaTcp.send_msg(to_string(mr->lkey)+"\n");
-    myrdmaTcp.send_msg(to_string(mr->rkey)+"\n");
-    myrdmaTcp.send_msg(to_string(lid)+"\n");
-    myrdmaTcp.send_msg(to_string(qp_num)+"\n");
 
     //Read RDMA info
-    vector<int> sockList = myrdmaTcp.getValidSock();
-    
-    vector<map<string,string>> rdmaInfo;
 
     for(int i=0; i<sockList.size(); i++){
         map<string,string> returnVal = myrdmaTcp.readRDMAInfo(sockList[i]);
@@ -57,19 +53,24 @@ int main(int argc, char *argv[])
 
     //Exchange queue pair state
     for(int i=0; i<sockList.size(); i++){
-        rdma.changeQueuePairStateToInit(qp);
-        rdma.changeQueuePairStateToRTR(qp, PORT, stoi(rdmaInfo[i].find("qp_num")->second), stoi(rdmaInfo[i].find("lid")->second));
-        rdma.changeQueuePairStateToRTS(qp);
+        myrdma[i].changeQueuePairStateToInit(myrdma[i].rdmaBaseData.qp);
+        myrdma[i].changeQueuePairStateToRTR(myrdma[i].rdmaBaseData.qp, PORT, stoi(rdmaInfo[i].find("qp_num")->second), stoi(rdmaInfo[i].find("lid")->second));
+        myrdma[i].changeQueuePairStateToRTS(myrdma[i].rdmaBaseData.qp);
     }
 
     sleep(10);
-    cout << send_buffer << endl;
+
+    for(int i=0; i<sockList.size(); i++){
+        cout << send_buffer[i] << endl;
+    }
+
     
-    ibv_destroy_qp(qp);
-    ibv_destroy_cq(completion_queue);
-    ibv_dereg_mr(mr);
-    ibv_dealloc_pd(protection_domain);
-    
+    for(int i=0; i<sockList.size(); i++){
+        ibv_destroy_qp(myrdma[i].rdmaBaseData.qp);
+        ibv_destroy_cq(myrdma[i].rdmaBaseData.completion_queue);
+        ibv_dereg_mr(myrdma[i].rdmaBaseData.mr);
+        ibv_dealloc_pd(myrdma[i].rdmaBaseData.protection_domain);
+    }
 
     return 0;
 }
