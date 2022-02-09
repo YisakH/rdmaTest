@@ -67,28 +67,25 @@ int main(int argc, char *argv[])
         myrdma[i].changeQueuePairStateToRTS(myrdma[i].rdmaBaseData.qp);
     }
 
+
+
+    ThreadPool server_t(4);
+
     if (serverMode)
     {
-        while (true)
-        {
-            sleep(5);
-
-            for (int i = 0; i < sockList.size(); i++)
-            {
-                cout << send_buffer[i] << endl;
-            }
-        }
+        myrdma[0].readRDMAMsg((char **)send_buffer, sockList.size());
     }
     else
     { // client mode
         while (true)
         {
-            string input;
-            cin >> input;
+            char input[1024];
+            cin.getline(input, sizeof(input));
+
             string sss = string(argv[1]) + " : " + input;
             for (int i = 0; i < sockList.size(); i++)
             {
-                strcpy(send_buffer[i], sss.c_str());
+                strcpy(send_buffer[i], input);
                 myrdma[i].post_rdma_write(myrdma[i].rdmaBaseData.qp, myrdma[i].rdmaBaseData.mr,
                                           send_buffer[i], sizeof(char) * 1024, rdmaInfo[i].find("addr")->second, rdmaInfo[i].find("rkey")->second);
                 myrdma[i].pollCompletion(myrdma[i].rdmaBaseData.completion_queue);

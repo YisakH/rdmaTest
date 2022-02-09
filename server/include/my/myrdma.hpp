@@ -18,6 +18,8 @@ public:
         struct ibv_mr *mr;
         uint16_t lid;
         uint32_t qp_num;
+
+        struct ibv_comp_channel* comp_channel;
     }rdmaBaseData;
 
     myRDMA()
@@ -26,6 +28,8 @@ public:
 
     void makeRDMAqp(char * send_buffer, int buffer_size);
 
-    
+    void readRDMAMsg(char **send_buffer, int sizeofNode);
+
+    void readRDMAMsg_t(char **send_buffer, int sizeofNode);    
 
 };

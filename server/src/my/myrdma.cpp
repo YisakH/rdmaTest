@@ -1,4 +1,5 @@
 #include "myrdma.hpp"
+#include "thread"
 
 
 
@@ -15,4 +16,25 @@ void myRDMA::makeRDMAqp(char * send_buffer, int buffer_size)
     rdmaBaseData.mr = rdma->registerMemoryRegion(rdmaBaseData.protection_domain, send_buffer, buffer_size);
     rdmaBaseData.lid = rdma->getLocalId(rdmaBaseData.context, PORT);
     rdmaBaseData.qp_num = rdma->getQueuePairNumber(rdmaBaseData.qp);
+    
+    rdmaBaseData.comp_channel = ibv_create_comp_channel(rdmaBaseData.context);
+}
+
+void myRDMA::readRDMAMsg(char **send_buffer, int sizeofNode)
+{
+    thread t(&readRDMAMsg_t, send_buffer, sizeofNode);
+
+    t.detach();
+}
+
+void myRDMA::readRDMAMsg_t(char **send_buffer, int sizeofNode)
+{
+    while (true)
+    {
+        ibv_get_cq_event(rdmaBaseData.comp_channel, &rdmaBaseData.completion_queue, (void **) &rdmaBaseData.context);
+        
+        for(int i=0; i<sizeofNode; i++){
+            printf("%s\n", send_buffer[i]);
+        }
+    }
 }
