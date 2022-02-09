@@ -150,7 +150,8 @@ void RDMA::post_rdma_write(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uin
       .wr_id      = (uint64_t)(uintptr_t)addr,
       .sg_list    = &sge,
       .num_sge    = 1,
-      .opcode     = IBV_WR_RDMA_WRITE,
+      .opcode     = IBV_WR_SEND_WITH_IMM, //IBV_WR_RDMA_WRITE,
+      .send_flags = 0,
       .imm_data   = rand(),
       .wr = {
         .rdma = {

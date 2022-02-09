@@ -90,8 +90,12 @@ int main(int argc, char *argv[])
             for (int i = 0; i < sockList.size(); i++)
             {
                 strcpy(send_buffer[i], input);
-                myrdma[i].post_rdma_write(myrdma[i].rdmaBaseData.qp, myrdma[i].rdmaBaseData.mr,
-                                          send_buffer[i], sizeof(char) * 1024, rdmaInfo[i].find("addr")->second, rdmaInfo[i].find("rkey")->second);
+                myrdma[i].post_rdma_write(myrdma[i].rdmaBaseData.qp,
+                                          myrdma[i].rdmaBaseData.mr,
+                                          send_buffer[i], 
+                                          sizeof(char) * 1024, 
+                                          rdmaInfo[i].find("addr")->second, 
+                                          rdmaInfo[i].find("rkey")->second);
                 myrdma[i].pollCompletion(myrdma[i].rdmaBaseData.completion_queue);
             }
         }
