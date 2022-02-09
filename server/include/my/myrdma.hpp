@@ -4,6 +4,8 @@ class myRDMA : public RDMA
 {
 public:
     RDMA *rdma;
+    char * send_buffer;
+
     struct rdmaBaseData
     {
         RDMA rdma;
@@ -28,8 +30,8 @@ public:
 
     void makeRDMAqp(char * send_buffer, int buffer_size);
 
-    void readRDMAMsg(char **send_buffer, int sizeofNode);
+    void readRDMAMsg(int sizeofNode);
 
-    void readRDMAMsg_t(char **send_buffer, int sizeofNode);    
+    void readRDMAMsg_t(int sizeofNode);    
 
 };

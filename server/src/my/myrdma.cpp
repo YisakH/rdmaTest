@@ -6,6 +6,7 @@
 void myRDMA::makeRDMAqp(char * send_buffer, int buffer_size)
 {
     rdma = new RDMA;
+    this->send_buffer = send_buffer;
 
     rdmaBaseData.context = rdma->createContext();
     rdmaBaseData.protection_domain = ibv_alloc_pd(rdmaBaseData.context);
@@ -20,21 +21,21 @@ void myRDMA::makeRDMAqp(char * send_buffer, int buffer_size)
     rdmaBaseData.comp_channel = ibv_create_comp_channel(rdmaBaseData.context);
 }
 
-void myRDMA::readRDMAMsg(char **send_buffer, int sizeofNode)
+void myRDMA::readRDMAMsg(int sizeofNode)
 {
-    thread t(&readRDMAMsg_t, send_buffer, sizeofNode);
+    thread t(&myRDMA::readRDMAMsg_t, this,   sizeofNode);
 
     t.detach();
 }
 
-void myRDMA::readRDMAMsg_t(char **send_buffer, int sizeofNode)
+void myRDMA::readRDMAMsg_t(int sizeofNode)
 {
     while (true)
     {
         ibv_get_cq_event(rdmaBaseData.comp_channel, &rdmaBaseData.completion_queue, (void **) &rdmaBaseData.context);
         
         for(int i=0; i<sizeofNode; i++){
-            printf("%s\n", send_buffer[i]);
+            printf("%s\n", send_buffer);
         }
     }
 }
