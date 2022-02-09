@@ -29,13 +29,14 @@ int main(int argc, char *argv[])
     vector<int> sockList = myrdmaTcp.getValidSock();
     vector<map<string,string>> rdmaInfo;
     char send_buffer[4][1024];
+    char recv_buffer[4][1024];
 
     for(int i=0; i<sockList.size(); i++){
         //char send_buffer[1024];
-        myrdma[i].makeRDMAqp(send_buffer[i], sizeof(send_buffer));
+        myrdma[i].makeRDMAqp(recv_buffer[i], sizeof(recv_buffer));
 
         std::ostringstream oss;
-        oss << &send_buffer[i];
+        oss << &recv_buffer[i];
         myrdmaTcp.send_msg(i, oss.str()+"\n");
         myrdmaTcp.send_msg(i, to_string(myrdma[i].rdmaBaseData.mr->length)+"\n");
         myrdmaTcp.send_msg(i, to_string(myrdma[i].rdmaBaseData.mr->lkey)+"\n");
