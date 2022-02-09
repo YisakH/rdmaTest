@@ -28,12 +28,12 @@ int main(int argc, char *argv[])
     myRDMA myrdma[NUM_DEST];
     vector<int> sockList = myrdmaTcp.getValidSock();
     vector<map<string, string>> rdmaInfo;
-    //char send_buffer[4][1024];
+    char send_buffer[4][1024];
     // char recv_buffer[4][1024];
 
-    char** send_buffer = new char*[4];
-    for(int i=0; i<4; i++)
-        send_buffer[i] = new char[1024];
+    // char** send_buffer = new char*[4];
+    // for(int i=0; i<4; i++)
+    //     send_buffer[i] = new char[1024];
 
     for (int i = 0; i < sockList.size(); i++)
     {
