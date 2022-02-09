@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
         sleep(10);
         
         for(int i=0; i<sockList.size(); i++){
-            cout << send_buffer[i] << endl;
+            cout << recv_buffer[i] << endl;
         }
     }
     else{ // client mode
