@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
             cin.getline(input, sizeof(input));
 
             string sss = string(argv[1]) + " : " + input;
-            for (int i = 0; i < sockList.size(); i++)          
+            for (int i = 0; i < 1; i++)          // 수정해야함 !!!!!
             {
                 strcpy(send_buffer[i], input);
                 myrdma[i].post_rdma_write(myrdma[i].rdmaBaseData.qp,
@@ -117,12 +117,16 @@ int main(int argc, char *argv[])
                                           sizeof(char) * 1024, 
                                           rdmaInfo[i].find("addr")->second, 
                                           rdmaInfo[i].find("rkey")->second);
-                //myrdma[i].pollCompletion(myrdma[i].rdmaBaseData.completion_queue);
+                myrdma[i].pollCompletion(myrdma[i].rdmaBaseData.completion_queue);
+                printf("send 폴링 완료\n");
             }
         }
     }
 
-    sleep(30);
+    while(true)
+    {
+        sleep(2);
+    }
 
     for (int i = 0; i < sockList.size(); i++)
     {
