@@ -16,7 +16,26 @@ int main(int argc, char *argv[])
     printf("%s mode run\n", argv[2]);
 
     rdmaTcp myrdmaTcp(argv[1]);
-    bool serverMode = (strcmp(argv[2], "-s") == 0 ? true : false);
+
+    bool serverMode = false;
+    bool clientMode = false;
+    if(strcmp(argv[2], "-s") == 0)
+    {
+        serverMode = true;
+    }
+    else if(strcmp(argv[2], "-sc") == 0)
+    {
+        serverMode = true;
+        clientMode = true;
+    }
+    else if(strcmp(argv[2], "-c") == 0)
+    {
+        clientMode = true;
+    }
+
+    printf("Server Mode : %s\n", (serverMode) ? "ON" : "OFF");
+    printf("Client Mode : %s\n", (clientMode) ? "ON" : "OFF");
+    
 
     myrdmaTcp.server();
     sleep(1);
@@ -77,9 +96,11 @@ int main(int argc, char *argv[])
 
     if (serverMode)
     {
-        myrdma[0].readRDMAMsg(sockList.size());
+        for(int i=0; i<sockList.size(); i++)
+            myrdma[i].readRDMAMsg(sockList.size());
     }
-    else
+    
+    if(clientMode)
     { // client mode
         while (true)
         {
@@ -87,7 +108,7 @@ int main(int argc, char *argv[])
             cin.getline(input, sizeof(input));
 
             string sss = string(argv[1]) + " : " + input;
-            for (int i = 0; i < 1; i++)           // 수정 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            for (int i = 0; i < sockList.size(); i++)           // 수정 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             {
                 strcpy(send_buffer[i], input);
                 myrdma[i].post_rdma_write(myrdma[i].rdmaBaseData.qp,

@@ -28,7 +28,7 @@ void myRDMA::readRDMAMsg(int sizeofNode)
 {
     thread t(&myRDMA::readRDMAMsg_t, this,   sizeofNode);
 
-    t.join();
+    t.detach();
 }
 
 void myRDMA::readRDMAMsg_t(int sizeofNode)
