@@ -144,7 +144,7 @@ void manyToMany::client_t(int index)
     addr.sin_addr.s_addr = int_ip;
     addr.sin_port = htons(atoi(port));
 
-    printf("%s 에 %s 포트로 연결 시도합니다...\n", ip.c_str(), port);
+    //printf("%s 에 %s 포트로 연결 시도합니다...\n", ip.c_str(), port);
     for (int i = 0; i < 100; i++)
     {
 
