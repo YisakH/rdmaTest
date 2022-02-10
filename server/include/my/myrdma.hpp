@@ -34,4 +34,5 @@ public:
 
     void readRDMAMsg_t(int sizeofNode);    
 
+    int tempRecv();
 };

@@ -33,17 +33,37 @@ void myRDMA::readRDMAMsg(int sizeofNode)
 
 void myRDMA::readRDMAMsg_t(int sizeofNode)
 {
-    ibv_req_notify_cq(rdmaBaseData.completion_queue, 0);
+    //ibv_req_notify_cq(rdmaBaseData.completion_queue, 0);
 
     while (true)
     {
         void *cq_context;
 
-        printf("read RDMAMsg_t 실행중...\n");
-        ibv_get_cq_event(rdmaBaseData.comp_channel, &rdmaBaseData.completion_queue, &cq_context);
+        //printf("read RDMAMsg_t 실행중...\n");
+        //ibv_get_cq_event(rdmaBaseData.comp_channel, &rdmaBaseData.completion_queue, &cq_context);
         
         for(int i=0; i<sizeofNode; i++){
             printf("%s\n", send_buffer);
         }
     }
+}
+
+int myRDMA::tempRecv()
+{
+    struct ibv_sge sge = {
+        .addr = (uint64_t)(uintptr_t)send_buffer,
+        .length = 1024,
+        .lkey = rdmaBaseData.mr->lkey,
+    };
+
+    struct ibv_recv_wr recv_wr = {
+        .wr_id = (uint64_t)(uintptr_t)sge.addr,
+        .next = NULL,
+        .sg_list = &sge,
+        .num_sge = 1,
+    };
+
+    struct ibv_recv_wr *bad_wr;
+
+    return ibv_post_recv(rdmaBaseData.qp, &recv_wr, &bad_wr);
 }
