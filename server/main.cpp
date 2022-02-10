@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
                                           sizeof(char) * 1024, 
                                           rdmaInfo[i].find("addr")->second, 
                                           rdmaInfo[i].find("rkey")->second);
-                myrdma[i].pollCompletion(myrdma[i].rdmaBaseData.completion_queue);
+                //myrdma[i].pollCompletion(myrdma[i].rdmaBaseData.completion_queue);
             }
         }
     }
