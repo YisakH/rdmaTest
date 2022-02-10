@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     else if(strcmp(argv[2], "-sc") == 0)
     {
         serverMode = true;
-        //clientMode = true;
+        clientMode = true;
     }
     else if(strcmp(argv[2], "-c") == 0)
     {

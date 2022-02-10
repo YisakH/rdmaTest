@@ -29,17 +29,19 @@ void myRDMA::readRDMAMsg(int sizeofNode)
 
 void myRDMA::readRDMAMsg_t(int sizeofNode)
 {
-    // ibv_req_notify_cq(rdmaBaseData.completion_queue, 0);
+    ibv_req_notify_cq(rdmaBaseData.completion_queue, 0);
 
     while (true)
     {
         void *cq_context;
 
-        printf("수신 실행됨\n");
-        tempRecv();
+        
+        ibv_get_cq_event(rdmaBaseData.comp_channel, &rdmaBaseData.completion_queue, &cq_context);
+        ibv_req_notify_cq(rdmaBaseData.completion_queue, 0);
 
-        // ibv_get_cq_event(rdmaBaseData.comp_channel, &rdmaBaseData.completion_queue, &cq_context);
-        // ibv_req_notify_cq(rdmaBaseData.completion_queue, 0);
+        printf("수신 실행됨1\n");
+        tempRecv();
+        printf("수신 실행됨2\n");
 
         pollCompletion(rdmaBaseData.completion_queue);
 
