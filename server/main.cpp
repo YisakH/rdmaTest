@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    sleep(3);
+    sleep(30);
 
     for (int i = 0; i < sockList.size(); i++)
     {
