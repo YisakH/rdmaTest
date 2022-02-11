@@ -24,7 +24,7 @@ class RDMA{
     public:
         bool pollCompletion(struct ibv_cq* cq);
         struct ibv_context* createContext();
-        struct ibv_qp* createQueuePair(struct ibv_pd* pd, struct ibv_cq* cq);
+        struct ibv_qp* createQueuePair(struct ibv_pd* pd, struct ibv_cq* send_cq, struct ibv_cq* recv_cq);
         bool changeQueuePairStateToInit(struct ibv_qp* queue_pair);
         bool changeQueuePairStateToRTR(struct ibv_qp* queue_pair, int ib_port, uint32_t destination_qp_number, uint16_t destination_local_id);
         uint16_t getLocalId(struct ibv_context* context, int ib_port);  

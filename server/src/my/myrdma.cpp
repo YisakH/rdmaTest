@@ -13,8 +13,9 @@ void myRDMA::makeRDMAqp(char *send_buffer, char *recv_buffer, int buffer_size)
     rdmaBaseData.cq_size = 0x10;
     rdmaBaseData.comp_channel = ibv_create_comp_channel(rdmaBaseData.context);
 
-    rdmaBaseData.completion_queue = ibv_create_cq(rdmaBaseData.context, rdmaBaseData.cq_size, cq_context, rdmaBaseData.comp_channel, 1);
-    rdmaBaseData.qp = rdma->createQueuePair(rdmaBaseData.protection_domain, rdmaBaseData.completion_queue);
+    rdmaBaseData.send_cq = ibv_create_cq(rdmaBaseData.context, rdmaBaseData.cq_size, cq_context, rdmaBaseData.comp_channel, 1);
+    rdmaBaseData.recv_cq = ibv_create_cq(rdmaBaseData.context, rdmaBaseData.cq_size, cq_context, rdmaBaseData.comp_channel, 1);
+    rdmaBaseData.qp = rdma->createQueuePair(rdmaBaseData.protection_domain, rdmaBaseData.send_cq, rdmaBaseData.recv_cq);
 
     rdmaBaseData.mr = rdma->registerMemoryRegion(rdmaBaseData.protection_domain, send_buffer, buffer_size);
     rdmaBaseData.lid = rdma->getLocalId(rdmaBaseData.context, PORT);
@@ -30,7 +31,7 @@ void myRDMA::readRDMAMsg(int sizeofNode)
 
 void myRDMA::readRDMAMsg_t(int sizeofNode)
 {
-    ibv_req_notify_cq(rdmaBaseData.completion_queue, 0);
+    ibv_req_notify_cq(rdmaBaseData.recv_cq, 0);
 
     while (true)
     {
@@ -44,11 +45,11 @@ void myRDMA::readRDMAMsg_t(int sizeofNode)
         tempRecv();
         //printf("수신 실행됨2\n");
 
-        pollCompletion(rdmaBaseData.completion_queue);
+        pollCompletion(rdmaBaseData.recv_cq);
 
         printf("%s\n", send_buffer);
     }
-    ibv_ack_cq_events(rdmaBaseData.completion_queue, 1);
+    ibv_ack_cq_events(rdmaBaseData.recv_cq, 1);
 }
 
 int myRDMA::tempRecv()

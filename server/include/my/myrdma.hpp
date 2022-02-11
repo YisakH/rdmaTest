@@ -14,7 +14,8 @@ public:
         struct ibv_context* context;
         struct ibv_pd* protection_domain;
         int cq_size;
-        struct ibv_cq* completion_queue;
+        struct ibv_cq* send_cq;
+        struct ibv_cq* recv_cq;
         struct ibv_qp* qp;
 
         char send_buffer[1024];

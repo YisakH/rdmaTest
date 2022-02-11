@@ -6,17 +6,17 @@
 
 int main(int argc, char *argv[])
 {
-    // if (argc <= 1)
-    // {
-    //     printf("argument must be required\n");
-    //     exit(1);
-    // }
+    if (argc <= 1)
+    {
+        printf("argument must be required\n");
+        exit(1);
+    }
 
     char *myip = argv[1];
     char *mode = argv[2];
 
-    myip = "192.168.0.100";
-    mode = "-sc";
+    //myip = "192.168.0.100";
+    //mode = "-sc";
 
 
 
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
                                           sizeof(char) * 1024, 
                                           rdmaInfo[i].find("addr")->second, 
                                           rdmaInfo[i].find("rkey")->second);
-                myrdma[i].pollCompletion(myrdma[i].rdmaBaseData.completion_queue);
+                myrdma[i].pollCompletion(myrdma[i].rdmaBaseData.send_cq);
                 printf("send 폴링 완료\n");
             }
         }
@@ -140,7 +140,8 @@ int main(int argc, char *argv[])
     for (int i = 0; i < sockList.size(); i++)
     {
         ibv_destroy_qp(myrdma[i].rdmaBaseData.qp);
-        ibv_destroy_cq(myrdma[i].rdmaBaseData.completion_queue);
+        ibv_destroy_cq(myrdma[i].rdmaBaseData.send_cq);
+        ibv_destroy_cq(myrdma[i].rdmaBaseData.recv_cq);
         ibv_dereg_mr(myrdma[i].rdmaBaseData.mr);
         ibv_dealloc_pd(myrdma[i].rdmaBaseData.protection_domain);
     }
