@@ -5,6 +5,7 @@ class myRDMA : public RDMA
 public:
     RDMA *rdma;
     char * send_buffer;
+    char * recv_buffer;
 
     struct rdmaBaseData
     {
@@ -17,6 +18,7 @@ public:
         struct ibv_qp* qp;
 
         char send_buffer[1024];
+        char recv_buffer[1024];
         struct ibv_mr *mr;
         uint16_t lid;
         uint32_t qp_num;
@@ -28,7 +30,7 @@ public:
     {
     }
 
-    void makeRDMAqp(char * send_buffer, int buffer_size);
+    void makeRDMAqp(char * send_buffer, char *recv_buffer, int buffer_size);
 
     void readRDMAMsg(int sizeofNode);
 

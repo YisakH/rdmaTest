@@ -6,29 +6,37 @@
 
 int main(int argc, char *argv[])
 {
-    if (argc <= 1)
-    {
-        printf("argument must be required\n");
-        exit(1);
-    }
+    // if (argc <= 1)
+    // {
+    //     printf("argument must be required\n");
+    //     exit(1);
+    // }
 
-    printf("%s\n", argv[1]);
-    printf("%s mode run\n", argv[2]);
+    char *myip = argv[1];
+    char *mode = argv[2];
 
-    rdmaTcp myrdmaTcp(argv[1]);
+    myip = "192.168.0.100";
+    mode = "-sc";
+
+
+
+    printf("%s\n", myip);
+    printf("%s mode run\n", mode);
+
+    rdmaTcp myrdmaTcp(myip);
 
     bool serverMode = false;
     bool clientMode = false;
-    if(strcmp(argv[2], "-s") == 0)
+    if(strcmp(mode, "-s") == 0)
     {
         serverMode = true;
     }
-    else if(strcmp(argv[2], "-sc") == 0)
+    else if(strcmp(mode, "-sc") == 0)
     {
         serverMode = true;
         clientMode = true;
     }
-    else if(strcmp(argv[2], "-c") == 0)
+    else if(strcmp(mode, "-c") == 0)
     {
         clientMode = true;
     }
@@ -48,6 +56,7 @@ int main(int argc, char *argv[])
     vector<int> sockList = myrdmaTcp.getValidSock();
     vector<map<string, string>> rdmaInfo;
     char send_buffer[4][1024];
+    char recv_buffer[4][1024];
     // char recv_buffer[4][1024];
 
     // char** send_buffer = new char*[4];
@@ -57,7 +66,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < sockList.size(); i++)
     {
         // char send_buffer[1024];
-        myrdma[i].makeRDMAqp(send_buffer[i], sizeof(send_buffer));
+        myrdma[i].makeRDMAqp(send_buffer[i], recv_buffer[i], sizeof(send_buffer));
 
         std::ostringstream oss;
         oss << &send_buffer[i];
@@ -107,7 +116,7 @@ int main(int argc, char *argv[])
             char input[1024];
             cin.getline(input, sizeof(input));
 
-            string sss = string(argv[1]) + " : " + input;
+            string sss = string(myip) + " : " + input;
             for (int i = 0; i < 1; i++)          // 수정해야함 !!!!!
             {
                 strcpy(send_buffer[i], sss.c_str());

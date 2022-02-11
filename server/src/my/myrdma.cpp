@@ -1,10 +1,11 @@
 #include "myrdma.hpp"
 #include "thread"
 
-void myRDMA::makeRDMAqp(char *send_buffer, int buffer_size)
+void myRDMA::makeRDMAqp(char *send_buffer, char *recv_buffer, int buffer_size)
 {
     rdma = new RDMA;
     this->send_buffer = send_buffer;
+    this->recv_buffer = recv_buffer;
     void *cq_context = NULL;
 
     rdmaBaseData.context = rdma->createContext();
@@ -53,7 +54,7 @@ void myRDMA::readRDMAMsg_t(int sizeofNode)
 int myRDMA::tempRecv()
 {
     struct ibv_sge sge = {
-        .addr = (uint64_t)(uintptr_t)send_buffer,
+        .addr = (uint64_t)(uintptr_t)recv_buffer,
         .length = 1024,
         .lkey = rdmaBaseData.mr->lkey,
     };
