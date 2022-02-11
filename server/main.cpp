@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
             string sss = string(argv[1]) + " : " + input;
             for (int i = 0; i < 1; i++)          // 수정해야함 !!!!!
             {
-                strcpy(send_buffer[i], input);
+                strcpy(send_buffer[i], sss.c_str());
                 myrdma[i].post_rdma_write(myrdma[i].rdmaBaseData.qp,
                                           myrdma[i].rdmaBaseData.mr,
                                           send_buffer[i], 
