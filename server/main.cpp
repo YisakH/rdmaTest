@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
             cin.getline(input, sizeof(input));
 
             string sss = string(myip) + " : " + input;
-            for (int i = 0; i < 1; i++)          // 수정해야함 !!!!!
+            for (int i = 0; i < sockList.size(); i++)
             {
                 strcpy(send_buffer[i], sss.c_str());
                 myrdma[i].post_rdma_write(myrdma[i].rdmaBaseData.qp,
