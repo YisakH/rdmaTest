@@ -57,15 +57,9 @@ int main(int argc, char *argv[])
     vector<map<string, string>> rdmaInfo;
     char send_buffer[4][1024];
     char recv_buffer[4][1024];
-    // char recv_buffer[4][1024];
-
-    // char** send_buffer = new char*[4];
-    // for(int i=0; i<4; i++)
-    //     send_buffer[i] = new char[1024];
 
     for (int i = 0; i < sockList.size(); i++)
     {
-        // char send_buffer[1024];
         myrdma[i].makeRDMAqp(send_buffer[i], recv_buffer[i], sizeof(send_buffer));
 
         std::ostringstream oss;
@@ -89,7 +83,6 @@ int main(int argc, char *argv[])
         map<string, string> returnVal = myrdmaTcp.readRDMAInfo(sockList[i]);
         rdmaInfo.push_back(returnVal);
     }
-    // map<string, string> rdmaInfo = myrdmaTcp.readRDMAInfo();
 
     // Exchange queue pair state
     for (int i = 0; i < sockList.size(); i++)
@@ -101,7 +94,7 @@ int main(int argc, char *argv[])
 
 
 
-    ThreadPool server_t(4);
+    ThreadPool server_t(sockList.size());
 
     if (serverMode)
     {
