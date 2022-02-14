@@ -99,7 +99,9 @@ int main(int argc, char *argv[])
     if (serverMode)
     {
         for(int i=0; i<sockList.size(); i++)
-            myrdma[i].readRDMAMsg(sockList.size());
+
+            server_t.EnqueueJob([&myrdma, i]()
+                                { myrdma[i].tempRecv(); });
     }
     
     if(clientMode)

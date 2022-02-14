@@ -45,7 +45,6 @@ void myRDMA::readRDMAMsg_t(int sizeofNode)
         tempRecv();
         //printf("수신 실행됨2\n");
 
-        pollCompletion(rdmaBaseData.recv_cq);
 
         printf("%s\n", send_buffer);
     }
@@ -69,5 +68,8 @@ int myRDMA::tempRecv()
 
     struct ibv_recv_wr *bad_wr;
 
-    return ibv_post_recv(rdmaBaseData.qp, &recv_wr, &bad_wr);
+    ibv_post_recv(rdmaBaseData.qp, &recv_wr, &bad_wr);
+    pollCompletion(rdmaBaseData.recv_cq);
+
+    return 1;
 }
