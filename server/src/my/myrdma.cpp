@@ -70,6 +70,8 @@ int myRDMA::tempRecv()
 
     ibv_post_recv(rdmaBaseData.qp, &recv_wr, &bad_wr);
     pollCompletion(rdmaBaseData.recv_cq);
+    
+    printf("%s\n", send_buffer);
 
     return 1;
 }
