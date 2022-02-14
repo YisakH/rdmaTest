@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
         for(int i=0; i<sockList.size(); i++)
 
             server_t.EnqueueJob([&myrdma, i]()
-                                { myrdma[i].tempRecv(); });
+                                { while(true) {myrdma[i].tempRecv();} });
     }
     
     if(clientMode)
