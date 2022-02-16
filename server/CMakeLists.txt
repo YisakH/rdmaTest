@@ -20,5 +20,5 @@ add_executable(program ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 
 #add_subdirectory(lib)
 #target_link_libraries(program PRIVATE Threads::Threads)
-target_link_libraries(program PRIVATE pthread ibverbs my tools)
-target_include_directories(program PUBLIC includes)
+target_link_libraries(program PRIVATE pthread ibverbs my tools infinity)
+target_include_directories(program PUBLIC ${CMAKE_SOURCE_DIR}/include)
