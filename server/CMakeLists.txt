@@ -14,6 +14,7 @@ set(CMAKE_BUILD_TYPE Debug)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/my)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/tools)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/infinity)
 
 add_executable(program ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 
