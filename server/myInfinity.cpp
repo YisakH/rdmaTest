@@ -38,13 +38,14 @@ int main(int argc, char **argv) {
 	infinity::queues::QueuePair *qp;
 
 	if(isServer) {
+		char input[1024];
 
 		printf("Creating buffers to read from and write to\n");
-		infinity::memory::Buffer *bufferToReadWrite = new infinity::memory::Buffer(context, 128 * sizeof(char));
+		infinity::memory::Buffer *bufferToReadWrite = new infinity::memory::Buffer(context, input, sizeof(input));
 		infinity::memory::RegionToken *bufferToken = bufferToReadWrite->createRegionToken();
 
 		printf("Creating buffers to receive a message\n");
-		infinity::memory::Buffer *bufferToReceive = new infinity::memory::Buffer(context, 128 * sizeof(char));
+		infinity::memory::Buffer *bufferToReceive = new infinity::memory::Buffer(context, input, sizeof(input));
 		context->postReceiveBuffer(bufferToReceive);
 
 		printf("Setting up connection (blocking)\n");
@@ -55,11 +56,14 @@ int main(int argc, char **argv) {
 		infinity::core::receive_element_t receiveElement;
 		while(!context->receive(&receiveElement));
 
+		printf("receive msg : %s\n", input);
 		printf("Message received\n");
 		delete bufferToReadWrite;
 		delete bufferToReceive;
 
 	} else {
+		
+		char input[1024] = "hello world!";
 
 		printf("Connecting to remote node\n");
 		qp = qpFactory->connectToRemoteHost(SERVER_IP, PORT_NUMBER);
@@ -67,17 +71,20 @@ int main(int argc, char **argv) {
 
 
 		printf("Creating buffers\n");
-		infinity::memory::Buffer *buffer1Sided = new infinity::memory::Buffer(context, 128 * sizeof(char));
-		infinity::memory::Buffer *buffer2Sided = new infinity::memory::Buffer(context, 128 * sizeof(char));
+		infinity::memory::Buffer *buffer1Sided = new infinity::memory::Buffer(context, input, sizeof(input));
+		infinity::memory::Buffer *buffer2Sided = new infinity::memory::Buffer(context, input, sizeof(input));
 
+		
 		printf("Reading content from remote buffer\n");
 		infinity::requests::RequestToken requestToken(context);
+		/*
 		qp->read(buffer1Sided, remoteBufferToken, &requestToken);
 		requestToken.waitUntilCompleted();
 
 		printf("Writing content to remote buffer\n");
 		qp->write(buffer1Sided, remoteBufferToken, &requestToken);
 		requestToken.waitUntilCompleted();
+		*/
 
 		printf("Sending message to remote host\n");
 		qp->send(buffer2Sided, &requestToken);
