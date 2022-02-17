@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
 		printf("Writing content to remote buffer\n");
 		qp->write(buffer1Sided, remoteBufferToken, &requestToken);
 		requestToken.waitUntilCompleted();
-		*/
+		
 
 		printf("Sending message to remote host\n");
 		qp->send(buffer2Sided, &requestToken);
