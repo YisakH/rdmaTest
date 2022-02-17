@@ -151,6 +151,8 @@ int main(int argc, char **argv) {
 			gettimeofday(&stop, NULL);
 
 			uint64_t time = timeDiff(stop, start);
+			printf("total time : %d\n", time);
+
 			double msgRate = ((double)(OPERATIONS_COUNT * 1000000L)) / time;
 			double bandwidth = ((double) (OPERATIONS_COUNT * messageSize)) / (1024*1024) / (((double) time) / 1000000L);
 			double latency = ((double) time) / OPERATIONS_COUNT;
