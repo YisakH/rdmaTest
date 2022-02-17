@@ -12,6 +12,7 @@
 #include <math.h>
 #include <time.h>
 #include <sys/time.h>
+#include <time.h>
 
 #include <infinity/core/Context.h>
 #include <infinity/queues/QueuePairFactory.h>
@@ -105,6 +106,8 @@ int main(int argc, char **argv) {
 		delete sendBuffer;
 
 	} else {
+		struct timespec begin, end;
+
 
 		printf("Connecting to remote node\n");
 		qp = qpFactory->connectToRemoteHost(SERVER_IP, PORT_NUMBER);
@@ -150,7 +153,9 @@ int main(int argc, char **argv) {
 			uint64_t time = timeDiff(stop, start);
 			double msgRate = ((double)(OPERATIONS_COUNT * 1000000L)) / time;
 			double bandwidth = ((double) (OPERATIONS_COUNT * messageSize)) / (1024*1024) / (((double) time) / 1000000L);
+			double latency = ((double) time) / OPERATIONS_COUNT;
 			printf("%.3f msg/sec\t%.3f MB/sec\n", msgRate, bandwidth);
+			printf("latency : %.3f\n", latency);
 			fflush(stdout);
 
 			messageSize *= 2;

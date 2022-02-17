@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 		/*
 		qp->read(buffer1Sided, remoteBufferToken, &requestToken);
 		requestToken.waitUntilCompleted();
-
+		*/
 		printf("Writing content to remote buffer\n");
 		qp->write(buffer1Sided, remoteBufferToken, &requestToken);
 		requestToken.waitUntilCompleted();
