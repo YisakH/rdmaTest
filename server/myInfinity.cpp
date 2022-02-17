@@ -71,8 +71,8 @@ int main(int argc, char **argv) {
 
 
 		printf("Creating buffers\n");
-		infinity::memory::Buffer *buffer1Sided = new infinity::memory::Buffer(context, output, sizeof(input));
-		infinity::memory::Buffer *buffer2Sided = new infinity::memory::Buffer(context, output, sizeof(input));
+		infinity::memory::Buffer *buffer1Sided = new infinity::memory::Buffer(context, output, sizeof(output));
+		infinity::memory::Buffer *buffer2Sided = new infinity::memory::Buffer(context, output, sizeof(output));
 
 		
 		printf("Reading content from remote buffer\n");
