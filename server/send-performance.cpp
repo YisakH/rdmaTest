@@ -152,12 +152,13 @@ int main(int argc, char **argv) {
 
 			uint64_t time = timeDiff(stop, start);
 			printf("total time : %ld\n", time);
+			double msec = ((double)time) / 1000000L * 1000;
 
 			double msgRate = ((double)(OPERATIONS_COUNT * 1000000L)) / time;
 			double bandwidth = ((double) (OPERATIONS_COUNT * messageSize)) / (1024*1024) / (((double) time) / 1000000L);
-			double latency = ((double) time) / OPERATIONS_COUNT;
+			double latency = ((double) msec) / OPERATIONS_COUNT;
 			printf("%.3f msg/sec\t%.3f MB/sec\n", msgRate, bandwidth);
-			printf("latency : %.3f\n", latency);
+			printf("latency : %.3fms\n", latency);
 			fflush(stdout);
 
 			messageSize *= 2;
