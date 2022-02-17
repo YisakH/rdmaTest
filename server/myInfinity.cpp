@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
 
 	} else {
 		
-		char input[1024] = "hello world!";
+		char output[1024] = "hello world!";
 
 		printf("Connecting to remote node\n");
 		qp = qpFactory->connectToRemoteHost(SERVER_IP, PORT_NUMBER);
@@ -71,8 +71,8 @@ int main(int argc, char **argv) {
 
 
 		printf("Creating buffers\n");
-		infinity::memory::Buffer *buffer1Sided = new infinity::memory::Buffer(context, input, sizeof(input));
-		infinity::memory::Buffer *buffer2Sided = new infinity::memory::Buffer(context, input, sizeof(input));
+		infinity::memory::Buffer *buffer1Sided = new infinity::memory::Buffer(context, output, sizeof(input));
+		infinity::memory::Buffer *buffer2Sided = new infinity::memory::Buffer(context, output, sizeof(input));
 
 		
 		printf("Reading content from remote buffer\n");
