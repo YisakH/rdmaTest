@@ -108,6 +108,7 @@ int main(int argc, char *argv[])
 
     if (serverMode)
     {
+        printf("server mode run\n");
         for(int i=0; i<sockList.size(); i++)
 
             server_t.EnqueueJob([&myrdma, i]()
@@ -116,6 +117,7 @@ int main(int argc, char *argv[])
     
     if(clientMode)
     { // client mode
+        printf("client mode run\n");
         while (true)
         {
             char input[1024];
