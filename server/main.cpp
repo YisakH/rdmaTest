@@ -2,13 +2,6 @@
 #include "include/my/myrdma.hpp"
 #include "ThreadPool.hpp"
 
-#include <infinity/core/Context.h>
-#include <infinity/queues/QueuePairFactory.h>
-#include <infinity/queues/QueuePair.h>
-#include <infinity/memory/Buffer.h>
-#include <infinity/memory/RegionToken.h>
-#include <infinity/requests/RequestToken.h>
-
 #define PORT_NUMBER 40201
 #define SERVER_IP "192.0.0.1"
 
@@ -16,17 +9,19 @@
 
 int main(int argc, char *argv[])
 {
+    /*
     if (argc <= 1)
     {
         printf("argument must be required\n");
         exit(1);
     }
+    */
 
     char *myip = argv[1];
     char *mode = argv[2];
 
-    //myip = "192.168.0.100";
-    //mode = "-sc";
+    myip = "192.168.0.100";
+    mode = "-sc";
 
 
 
