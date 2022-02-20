@@ -10,7 +10,7 @@
 #include <infinity/memory/RegionToken.h>
 #include <infinity/requests/RequestToken.h>
 
-#define PORT_NUMBER 8011
+#define PORT_NUMBER 40201
 #define SERVER_IP "192.168.0.100"
 
 // Usage: ./progam -s for server and ./program for client component
