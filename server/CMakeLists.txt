@@ -7,10 +7,7 @@ project(
     LANGUAGES CXX
 )
 
-#set(THREADS_PREFER_PTHREAD_FLAG ON)
 set(CMAKE_BUILD_TYPE Debug)
-#find_package(Threads REQUIRED)
-
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/my)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/tools)
@@ -30,13 +27,3 @@ foreach( testsourcefile ${APP_SOURCES} )
     target_link_libraries( ${buildname} PRIVATE pthread ibverbs my tools infinity)
     target_include_directories(${buildname} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 endforeach( testsourcefile ${APP_SOURCES} )
-
-#add_executable(program ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
-
-
-#target_link_libraries(program PRIVATE pthread ibverbs my tools infinity)
-#target_include_directories(program PUBLIC ${CMAKE_SOURCE_DIR}/include)
-
-#add_executable(infinityTest ${CMAKE_CURRENT_SOURCE_DIR}/infinityTest.cpp)
-#target_link_libraries(infinityTest PRIVATE pthread ibverbs my tools infinity)
-#target_include_directories(infinityTest PUBLIC ${CMAKE_SOURCE_DIR}/include)
