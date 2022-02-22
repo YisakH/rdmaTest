@@ -9,29 +9,23 @@
 
 int main(int argc, char *argv[])
 {
-    /*
     if (argc <= 1)
     {
         printf("argument must be required\n");
         exit(1);
     }
-    */
 
-    char *myip = argv[1];
-    char *mode = argv[2];
+    const char *myip = argv[1];
+    const char *mode = argv[2];
 
-    myip = "192.168.0.100";
-    mode = "-sc";
-
-
-
+    //myip = "192.168.0.100";
+    //mode = "-sc";
     printf("%s\n", myip);
     printf("%s mode run\n", mode);
 
-    rdmaTcp myrdmaTcp(myip);
-
     bool serverMode = false;
     bool clientMode = false;
+
     if(strcmp(mode, "-s") == 0)
     {
         serverMode = true;
@@ -50,18 +44,20 @@ int main(int argc, char *argv[])
     printf("Client Mode : %s\n", (clientMode) ? "ON" : "OFF");
     
 
+    // tcp connect
+    rdmaTcp myrdmaTcp(myip);
     myrdmaTcp.server();
     sleep(1);
     myrdmaTcp.client(NoOfNode);
     sleep(1);
 
-    //-------------------------------------------------------------------------
-
+    
+    // Send RDMA info
     myRDMA myrdma[NUM_DEST];
     vector<int> sockList = myrdmaTcp.getValidSock();
     vector<map<string, string>> rdmaInfo;
-    char send_buffer[4][1024];
-    char recv_buffer[4][1024];
+    char send_buffer[NUM_DEST][1024];
+    char recv_buffer[NUM_DEST][1024];
 
     for (int i = 0; i < sockList.size(); i++)
     {
@@ -79,10 +75,8 @@ int main(int argc, char *argv[])
 
     sleep(2);
 
-    // Send RDMA info
 
     // Read RDMA info
-
     for (int i = 0; i < sockList.size(); i++)
     {
         map<string, string> returnVal = myrdmaTcp.readRDMAInfo(sockList[i]);
@@ -93,25 +87,27 @@ int main(int argc, char *argv[])
     for (int i = 0; i < sockList.size(); i++)
     {
         myrdma[i].changeQueuePairStateToInit(myrdma[i].rdmaBaseData.qp);
-        myrdma[i].changeQueuePairStateToRTR(myrdma[i].rdmaBaseData.qp, PORT, stoi(rdmaInfo[i].find("qp_num")->second), stoi(rdmaInfo[i].find("lid")->second));
+        myrdma[i].changeQueuePairStateToRTR(myrdma[i].rdmaBaseData.qp, PORT,
+                                            stoi(rdmaInfo[i].find("qp_num")->second),
+                                            stoi(rdmaInfo[i].find("lid")->second));
         myrdma[i].changeQueuePairStateToRTS(myrdma[i].rdmaBaseData.qp);
     }
 
 
 
+    // Run Server (msg recv)
     ThreadPool server_t(sockList.size());
-
     if (serverMode)
     {
         printf("server mode run\n");
         for(int i=0; i<sockList.size(); i++)
-
             server_t.EnqueueJob([&myrdma, i]()
                                 { while(true) {myrdma[i].tempRecv();} });
     }
     
+    // RUn Client (msg send)
     if(clientMode)
-    { // client mode
+    {
         printf("client mode run\n");
         while (true)
         {
@@ -129,7 +125,6 @@ int main(int argc, char *argv[])
                                           rdmaInfo[i].find("addr")->second, 
                                           rdmaInfo[i].find("rkey")->second);
                 myrdma[i].pollCompletion(myrdma[i].rdmaBaseData.send_cq);
-                printf("send 폴링 완료\n");
             }
         }
     }
