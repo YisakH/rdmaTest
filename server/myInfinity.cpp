@@ -63,7 +63,8 @@ int main(int argc, char **argv) {
 
 	} else {
 		
-		char output[1024] = "hello world!";
+		char output[1024];
+		scanf("%s", output);
 
 		printf("Connecting to remote node\n");
 		qp = qpFactory->connectToRemoteHost(SERVER_IP, PORT_NUMBER);
