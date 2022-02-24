@@ -173,6 +173,8 @@ void manyToMany::send_msg(string msg_s)
         exit_call();
 }
 
+// 연결 성공한 소켓 관리 함수
+// -> 
 bool manyToMany::crea_conn_sock(int sock, in_addr_t ip, bool isServer)
 {
     m.lock();
@@ -190,12 +192,7 @@ bool manyToMany::crea_conn_sock(int sock, in_addr_t ip, bool isServer)
     const char *converted_ip = inet_ntop(AF_INET, &ip, str, sizeof(str));
 
     printf("[%s] : %s에 %d socket으로 연결 성공!!\n",isServer ? "Server" : "Client" ,inet_ntop(AF_INET, &ip, str, sizeof(str)), sock);
-    //printf("%s\n", str);
-
-    //thread t(&manyToMany::recv_msg, this, sock, ref(converted_ip));
-
     usleep(1000000 * 0.4);
-    //t.detach();
     
     return true;
 }
