@@ -42,7 +42,6 @@ int main(int argc, char **argv) {
 				isServer = true;
 				break;
 			}
-
 			}
 		}
 		++argv;
