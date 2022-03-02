@@ -40,7 +40,7 @@ void myRDMA::readRDMAMsg_t(int sizeofNode)
         //ibv_req_notify_cq(rdmaBaseData.completion_queue, 0);
 
         tempRecv();
-        printf("%s\n", send_buffer);
+        //printf("%s\n", recv_buffer);
     }
     ibv_ack_cq_events(rdmaBaseData.recv_cq, 1);
 }
@@ -65,7 +65,7 @@ int myRDMA::tempRecv()
     ibv_post_recv(rdmaBaseData.qp, &recv_wr, &bad_wr);
     pollCompletion(rdmaBaseData.recv_cq);
     
-    printf("%s\n", send_buffer);
+    printf("%s\n", recv_buffer);
 
     return 1;
 }

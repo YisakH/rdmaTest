@@ -54,8 +54,6 @@ struct ibv_context* RDMA::createContext() {
         else 
           printf("false");
         printf("open\n");
-        //assert(context);
-        
     }
   return context;
 }
