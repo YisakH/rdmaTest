@@ -62,7 +62,7 @@ int myRDMA::tempRecv()
 
     struct ibv_recv_wr *bad_wr;
 
-    ibv_post_recv(rdmaBaseData.qp, &recv_wr, &bad_wr);
+    //ibv_post_recv(rdmaBaseData.qp, &recv_wr, &bad_wr);
     pollCompletion(rdmaBaseData.recv_cq);
     
     printf("%s\n", recv_buffer);
