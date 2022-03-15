@@ -129,6 +129,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    // server mode로만 동작하는 경우, 프로그램이 종료되지 않도록 설정
     while(true)
     {
         sleep(2);

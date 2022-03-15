@@ -36,11 +36,7 @@ void myRDMA::readRDMAMsg_t(int sizeofNode)
     while (true)
     {
         void *cq_context;
-        //ibv_get_cq_event(rdmaBaseData.comp_channel, &rdmaBaseData.completion_queue, &cq_context);
-        //ibv_req_notify_cq(rdmaBaseData.completion_queue, 0);
-
         tempRecv();
-        //printf("%s\n", recv_buffer);
     }
     ibv_ack_cq_events(rdmaBaseData.recv_cq, 1);
 }
