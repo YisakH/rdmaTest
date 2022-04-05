@@ -24,7 +24,7 @@
 #define PORT_NUMBER 40201
 #define SERVER_IP "192.168.0.100"
 #define BUFFER_COUNT 128
-#define MAX_BUFFER_SIZE 8192
+#define MAX_BUFFER_SIZE 1048576
 #define OPERATIONS_COUNT 409600
 
 uint64_t timeDiff(struct timeval stop, struct timeval start);
