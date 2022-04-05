@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "string_view": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "${workspaceFolder}/server"
 }
