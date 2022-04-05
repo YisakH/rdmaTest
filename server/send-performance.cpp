@@ -25,7 +25,7 @@
 #define SERVER_IP "192.168.0.100"
 #define BUFFER_COUNT 128
 #define MAX_BUFFER_SIZE 1048576
-#define OPERATIONS_COUNT 409600
+#define OPERATIONS_COUNT 4096
 
 uint64_t timeDiff(struct timeval stop, struct timeval start);
 
